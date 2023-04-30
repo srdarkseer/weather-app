@@ -26,7 +26,7 @@ function TempChart({ results }: Props) {
 
   return (
     <Card>
-      <Title>Temperature</Title>
+      <Title>Temperature and UC Index</Title>
       <AreaChart
         className="mt-6"
         date={data}
