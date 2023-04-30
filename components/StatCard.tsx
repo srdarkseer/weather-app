@@ -5,7 +5,7 @@ import { Card, Color, Metric, Text } from "@tremor/react";
 type Props = {
   title: string;
   metric: string;
-  color?: Color";
+  color?: Color;
 };
 
 function StatCard({ title, metric, color }: Props) {
