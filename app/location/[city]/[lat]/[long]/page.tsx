@@ -6,6 +6,8 @@ import RainChart from "@/components/RainChart";
 import StatCard from "@/components/StatCard";
 import TempChart from "@/components/TempChart";
 import fetchWeatherQuery from "@/graphql/queries/fetchWeatherQueries";
+import cleanData from "@/lib/cleanData";
+import getBasePath from "@/lib/getBasePath";
 
 export const revalidate =  60;
 
@@ -32,6 +34,21 @@ async function WeatherPage({ params: { city, lat, long } }: Props) {
 
   const results: Root = data.myQuery;
 
+  const dataToSend = cleanData(results, city);
+
+  const res = await fetch(`${getBasePath()}/api/getWeatherSummary`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      weatherData: dataToSend
+    })
+  })
+
+  const GPTdata = await res.json();
+  const { content } = GPTdata;
+
   console.log(results);
 
   return (
@@ -48,7 +65,7 @@ async function WeatherPage({ params: { city, lat, long } }: Props) {
             </p>
           </div>
           <div className="m-2 mb-10">
-            <CallOutCard message="This is where GPT-4 summary will go" />
+            <CallOutCard message={content} />
           </div>
 
           <div className="grid grid-cols-1 xl:grid-cols-2 gap-5 m-2">
